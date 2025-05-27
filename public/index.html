@@ -18,10 +18,9 @@
       <h2>Login</h2>
       <form id="loginForm">
         <label>Email:</label>
-        <input type="email" required />
+        <input type="email" id="loginEmail" name="email" required />
         <label>Password:</label>
-        <input type="password" required />
-
+        <input type="password" id="loginPassword" name="password" required />
         <div class="captcha-container">
         <canvas id="captchaCanvas" width="120" height="40"></canvas>
         <button type="button" id="refreshCaptcha">↻</button>
@@ -41,16 +40,16 @@
       <h2>Register</h2>
       <form id="registerForm">
         <label>Name:</label>
-        <input type="text" required />
+        <input id="name" type="text" required />
         <label>Email:</label>
-        <input type="email" required />
+        <input id="email" type="email" required />
         <label>Password:</label>
-        <input type="password" required />
+        <input id="password" type="password" required />
         <button type="submit">Register</button>
       </form>
     </div>
   </div>
-  
+
   <script src="functions.js"></script>
 </body>
 </html>

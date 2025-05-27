@@ -1,0 +1,138 @@
+/* Body and page basics */
+body {
+  min-height: 100vh;
+  background-color: #000;
+  color: #fff;
+  font-family: 'Courier New', Courier, monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  gap: 30px;
+}
+
+/* Title */
+h1 {
+  font-size: 2.5em;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+
+
+
+/* User info container */
+div > h2, div > p {
+  margin: 0 0 10px 0;
+  font-weight: normal;
+}
+
+/* Forms container holding both forms side by side */
+.forms-container {
+  display: flex;
+  gap: 40px;
+  width: 100%;
+  max-width: 900px;
+  justify-content: center;
+  flex-wrap: wrap; /* wrap on small screens */
+}
+
+/* Style each form */
+form {
+  background-color: #1f1f1f;
+  padding: 25px 30px;
+  border-radius: 8px;
+  border: 2px solid #5b21b6;
+  box-shadow: 0 0 10px #5b21b6;
+  width: 400px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Headings inside forms */
+form h3 {
+  margin: 0 0 15px 0;
+  font-weight: normal;
+  color: #e0b3ff;
+}
+
+/* Labels */
+form label {
+  font-size: 1em;
+  color: #e0b3ff;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Inputs */
+form input[type="text"],
+form input[type="password"] {
+  padding: 10px;
+  border: 2px solid #5b21b6;
+  border-radius: 6px;
+  background-color: #000;
+  color: #e0b3ff;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1em;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+form input[type="text"]:focus,
+form input[type="password"]:focus {
+  border-color: #a855f7;
+}
+
+/* Buttons inside forms */
+form button {
+  background-color: #1f1f1f;
+  border: 2px solid #5b21b6;
+  color: #e0b3ff;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1em;
+  padding: 12px 0;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+form button:hover {
+  background-color: #5b21b6;
+  color: #000;
+}
+
+/* Logout button */
+#logoutBtn {
+  background-color: #1f1f1f;
+  border: 2px solid #5b21b6;
+  color: #e0b3ff;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.1em;
+  padding: 14px 0;
+  width: 220px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s, color 0.3s;
+  margin-top: 20px;
+}
+
+#logoutBtn:hover {
+  background-color: #5b21b6;
+  color: #000;
+}
+
+/* Responsive - stack forms on small screens */
+@media (max-width: 900px) {
+  .forms-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  form {
+    width: 100%;
+    max-width: 400px;
+  }
+}
