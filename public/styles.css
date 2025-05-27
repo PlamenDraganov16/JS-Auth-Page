@@ -63,3 +63,86 @@ button:hover {
     width: 80%;
   }
 }
+
+/* This is for the popover */
+
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal-content {
+  background-color: #1f1f1f;
+  padding: 30px 40px;
+  border-radius: 8px;
+  width: 320px;
+  color: #fff;
+  position: relative;
+  box-shadow: 0 0 20px #5b21b6;
+}
+
+.close {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: #5b21b6;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* CSS for the two forms */
+
+form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+form label {
+  font-size: 1em;
+}
+
+form input {
+  padding: 10px;
+  border: 2px solid #5b21b6;      /* Darker purple border */
+  border-radius: 6px;
+  background-color: #1f1f1f;
+  color: #e0b3ff;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1em;
+  outline: none;
+}
+
+form input:focus {
+  border-color: #a855f7;           /* Slight lighter purple on focus */
+}
+
+form button {
+  background-color: #1f1f1f;
+  border: 2px solid #5b21b6;      /* Same purple as input borders */
+  color: #e0b3ff;
+  padding: 10px 0;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1em;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+form button:hover {
+  background-color: #5b21b6;       /* Darker purple fill on hover */
+  color: #000;
+}

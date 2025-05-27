@@ -8,7 +8,40 @@
 </head>
 <body>
     <h1>Welcome to my page...</h1>
-    <button class="btn-login">Login</button>
-    <button class="btn-register">Register</button>
+    <button id="loginBtn">Login</button>
+    <button id="registerBtn">Register</button>
+
+     <!-- Login Modal -->
+  <div id="loginModal" class="modal hidden">
+    <div class="modal-content">
+      <button class="close" data-close="loginModal">&times;</button>
+      <h2>Login</h2>
+      <form>
+        <label>Email:</label>
+        <input type="email" required />
+        <label>Password:</label>
+        <input type="password" required />
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Register Modal -->
+  <div id="registerModal" class="modal hidden">
+    <div class="modal-content">
+      <button class="close" data-close="registerModal">&times;</button>
+      <h2>Register</h2>
+      <form>
+        <label>Name:</label>
+        <input type="text" required />
+        <label>Email:</label>
+        <input type="email" required />
+        <label>Password:</label>
+        <input type="password" required />
+        <button type="submit">Register</button>
+      </form>
+    </div>
+  </div>
+  <script src="functions.js"></script>
 </body>
 </html>
