@@ -16,11 +16,19 @@
     <div class="modal-content">
       <button class="close" data-close="loginModal">&times;</button>
       <h2>Login</h2>
-      <form>
+      <form id="loginForm">
         <label>Email:</label>
         <input type="email" required />
         <label>Password:</label>
         <input type="password" required />
+
+        <div class="captcha-container">
+        <canvas id="captchaCanvas" width="120" height="40"></canvas>
+        <button type="button" id="refreshCaptcha">↻</button>
+        </div>
+
+        <input type="text" id="captchaInput" placeholder="Enter CAPTCHA" required>
+        
         <button type="submit">Login</button>
       </form>
     </div>
@@ -31,7 +39,7 @@
     <div class="modal-content">
       <button class="close" data-close="registerModal">&times;</button>
       <h2>Register</h2>
-      <form>
+      <form id="registerForm">
         <label>Name:</label>
         <input type="text" required />
         <label>Email:</label>

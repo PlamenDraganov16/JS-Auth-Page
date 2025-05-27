@@ -146,3 +146,25 @@ form button:hover {
   background-color: #5b21b6;       /* Darker purple fill on hover */
   color: #000;
 }
+
+/* CAPTCHA CSS */
+.captcha-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+#captchaCanvas {
+  border: 1px solid #5b21b6;
+  background-color: #111;
+  color: white;
+}
+
+#refreshCaptcha {
+  background-color: #5b21b6;
+  color: white;
+  border: none;
+  padding: 4px 8px;
+  cursor: pointer;
+}
