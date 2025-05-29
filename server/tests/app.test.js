@@ -1,6 +1,6 @@
 const supertest = require('supertest');
 const server = require('../app');
-const db = require('../config/db'); // Your db.js path
+const db = require('../config/db');
 const request = supertest.agent(server); // agent to persist cookies
 
 // Helper to run SQL queries with promises
@@ -14,9 +14,17 @@ function query(sql) {
 }
 
 describe('API Endpoints', () => {
+  // const testUser = {
+  //   name: 'TestUser',
+  //   email: 'testuser@example.com',
+  //   password: 'secret',
+  //   newName: 'UpdatedUser',
+  //   newPassword: 'newsecret',
+  // };
+  const randomSuffix = Math.floor(Math.random() * 100000);
   const testUser = {
     name: 'TestUser',
-    email: 'testuser@example.com',
+    email: `testuser${randomSuffix}@example.com`,
     password: 'secret',
     newName: 'UpdatedUser',
     newPassword: 'newsecret',
@@ -24,11 +32,18 @@ describe('API Endpoints', () => {
 
   beforeAll(async () => {
     // Clean users table before tests
-    await query('TRUNCATE TABLE users');
+    //  await query('TRUNCATE TABLE users');
+    await query("DELETE FROM users WHERE email LIKE 'testuser%@example.com'");
   });
 
-  afterAll(done => {
-    server.close(done);
+  // afterAll(done => {
+  //   server.close(done);
+  //   db.end(); // close MySQL connection when tests finish
+  // });
+
+  afterAll(async () => {
+    await query("DELETE FROM users WHERE email LIKE 'testuser%@example.com'");
+    server.close();
     db.end(); // close MySQL connection when tests finish
   });
 
