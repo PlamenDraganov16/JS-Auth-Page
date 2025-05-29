@@ -1,15 +1,18 @@
 require('dotenv').config();
-const http = require('http');
-const fs = require('fs').promises;
-const path = require('path');
+const http = require('http'); // Native HTTP module to create server
+const fs = require('fs').promises; // File system promises API for async file handling
+const path = require('path');  // Utilities for handling file and directory paths
 
 const { getSession } = require('./utils/sessionUtils');
 
+// Import route handlers for authentication and user-related APIs
 const { handleRegister, handleLogin, handleLogout, } = require('./routes/auth');
 const { handleGetProfile, handleUpdateProfile, handleChangePassword } = require('./routes/user');
 
 const PORT = process.env.PORT || 3000;
 
+
+// Function to return correct Content-Type header based on file extension
 const getContentType = (ext) => {
   switch (ext) {
     case '.css': return 'text/css';
@@ -23,7 +26,7 @@ const getContentType = (ext) => {
     case '.woff2': return 'font/woff2';
     case '.woff': return 'font/woff';
     case '.ttf': return 'font/ttf';
-    default: return 'application/octet-stream';
+    default: return 'application/octet-stream'; // default binary stream
   }
 };
 
@@ -37,7 +40,7 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
-  // Handle APIs FIRST (before static files)
+  // Handle API routes first - if any handler processes request, return immediately
   if (await handleRegister(req, res)) return;
   if (await handleLogin(req, res)) return;
   if (await handleLogout(req, res)) return;
@@ -45,7 +48,7 @@ const server = http.createServer(async (req, res) => {
   if (await handleUpdateProfile(req, res)) return;
   if (await handleChangePassword(req, res)) return;
 
-  // Then serve static files and homepage
+  // Serve homepage on root or /home requests
   if (req.method === 'GET' && (req.url === '/' || req.url === '/home')) {
     const filePath = path.join(__dirname, '../public/index.html');
     try {
@@ -58,10 +61,11 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+  // Serve static files for other GET requests
   if (req.method === 'GET') {
     let requestedPath = req.url.split('?')[0];
     requestedPath = path.normalize(requestedPath).replace(/^(\.\.[\/\\])+/, '');
-
+    // Remove query parameters and normalize path to prevent directory traversal attacks
     if (requestedPath === '/') requestedPath = '/index.html';
 
     const filePath = path.join(__dirname, '../public', requestedPath);
@@ -72,6 +76,7 @@ const server = http.createServer(async (req, res) => {
       res.writeHead(200, { 'Content-Type': getContentType(ext) });
       return res.end(data);
     } catch {
+      // For any other requests not handled above, return 404
       res.writeHead(404);
       return res.end('Not Found');
     }

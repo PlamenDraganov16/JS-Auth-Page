@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt');
 const db = require('../config/db');
 const { setSession, clearSession, sessions } = require('../utils/sessionUtils'); // We'll create this later for shared session funcs
 
+
+// Register a new user (POST /api/register)
 async function handleRegister(req, res) {
   if (req.method === 'POST' && req.url === '/api/register') {
     let body = '';
@@ -14,12 +16,14 @@ async function handleRegister(req, res) {
       const parsed = parse(body);
       const { name, email, password } = parsed;
 
+      // Validate input
       if (!name || !email || !password) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ success: false, message: 'All fields are required' }));
         return true;
       }
 
+      // Check if email is already registered
       const [results] = await db.promise().query('SELECT * FROM users WHERE email = ?', [email]);
 
       if (results.length > 0) {
@@ -28,6 +32,7 @@ async function handleRegister(req, res) {
         return true;
       }
 
+      // Hash password and store new user
       const hashedPassword = await bcrypt.hash(password, 10);
 
       await db.promise().query('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [
@@ -46,6 +51,8 @@ async function handleRegister(req, res) {
   return false; // Not handled
 }
 
+
+// Login a user (POST /api/login)
 async function handleLogin(req, res) {
   if (req.method === 'POST' && req.url === '/api/login') {
     let body = '';
@@ -62,6 +69,7 @@ async function handleLogin(req, res) {
         return true;
       }
 
+      // Find user by email
       const [results] = await db.promise().query('SELECT * FROM users WHERE email = ?', [email]);
 
       if (results.length === 0) {
@@ -71,6 +79,7 @@ async function handleLogin(req, res) {
       }
 
       const user = results[0];
+      // Compare password hashes
       const match = await bcrypt.compare(password, user.password);
       if (!match) {
         res.writeHead(401, { 'Content-Type': 'application/json' });
@@ -78,6 +87,7 @@ async function handleLogin(req, res) {
         return true;
       }
 
+      // Set user session
       const userData = { id: user.id, name: user.name, email: user.email };
       setSession(res, userData);
 
@@ -93,6 +103,7 @@ async function handleLogin(req, res) {
   return false;
 }
 
+// Logout a user (POST /api/logout)
 async function handleLogout(req, res) {
   if (req.method === 'POST' && req.url === '/api/logout') {
     clearSession(req, res);

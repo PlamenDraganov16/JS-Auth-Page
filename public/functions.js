@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // CAPTCHA
+  // CAPTCHA code string
   let captchaCode = '';
 
   function createCaptcha() {
 
-
+    // Generate a random 5-character CAPTCHA code and draw it on canvas
     const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
     captchaCode = Array.from({ length: 5 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
 
@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.fillText(captchaCode, 10, 30);
   }
 
+  // Check user input matches captchaCode, alert and regenerate if incorrect
   function checkCaptcha() {
     const userInput = document.getElementById('captchaInput').value.trim();
     if (userInput !== captchaCode) {
@@ -28,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return true;
   }
 
-  // LOGIN
+  // Perform login POST request with email and password
   async function login(email, password) {
     try {
       const response = await fetch('/api/login', {
@@ -40,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await response.json();
 
       if (data.success) {
-        window.location.href = '/profile.html';
+        window.location.href = '/profile.html'; // redirect on success
       } else {
         alert(data.message);
       }
@@ -50,11 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Handle login form submit event
   const loginForm = document.getElementById('loginForm');
   if (loginForm) {
     loginForm.addEventListener('submit', function (event) {
       event.preventDefault();
-      if (!checkCaptcha()) return;
+      if (!checkCaptcha()) return; // stop if captcha fails
 
       const email = document.getElementById('loginEmail').value;
       const password = document.getElementById('loginPassword').value;
@@ -62,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // REGISTER
+  // Handle register form submit event
   const registerForm = document.getElementById('registerForm');
   if (registerForm) {
     registerForm.addEventListener('submit', async (e) => {
@@ -75,6 +77,9 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const response = await fetch('/api/register', {
           method: 'POST',
+          // Use 'application/x-www-form-urlencoded' to send form data
+          // encoded as key=value pairs, similar to URL query parameters.
+          // This is the default encoding for HTML forms and is widely supported.
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams({ name, email, password }),
         });
@@ -84,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (response.ok) {
           alert(data.message);
           registerForm.reset();
-          hideModal('registerModal');
+          hideModal('registerModal'); // hide registration modal on success
         } else {
           alert(data.message);
         }
@@ -95,12 +100,12 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // PROFILE PAGE
+  // Load profile info and display it on profile page
   async function loadProfile() {
     const res = await fetch('/api/profile');
     const data = await res.json();
     if (!data.success) {
-      window.location.href = '/index.html';
+      window.location.href = '/index.html'; // redirect if not authenticated
       return;
     }
     const nameEl = document.getElementById('name');
@@ -109,6 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (emailEl) emailEl.textContent = data.user.email;
   }
 
+  // Handle change password form submit
   async function changePassword(event) {
     event.preventDefault();
     const currentPassword = document.getElementById('currentPassword').value;
@@ -124,6 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
     alert(data.message);
   }
 
+  // Handle edit profile form submit to update user name
   const editProfileForm = document.getElementById('editProfileForm');
   if (editProfileForm) {
     editProfileForm.addEventListener('submit', async (e) => {
@@ -134,6 +141,9 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         const res = await fetch('/api/update-profile', {
           method: 'POST',
+          // Use 'application/x-www-form-urlencoded' to send form data
+          // encoded as key=value pairs, similar to URL query parameters.
+          // This is the default encoding for HTML forms and is widely supported.
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body: new URLSearchParams({ name: updatedName })
         });
@@ -153,11 +163,14 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+
+  // Logout function, then redirect to homepage
   async function logout() {
     await fetch('/api/logout', { method: 'POST' });
     window.location.href = '/index.html';
   }
 
+  // On profile page load, fetch user data, setup event listeners
   if (window.location.pathname.endsWith('/profile.html')) {
     loadProfile();
     const changePasswordForm = document.getElementById('changePasswordForm');
@@ -167,23 +180,27 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
 
-  // MODALS
+  // Show modal by removing 'hidden' class
   function showModal(id) {
     const modal = document.getElementById(id);
     if (modal) modal.classList.remove('hidden');
   }
 
+  // Hide modal by adding 'hidden' class
   function hideModal(id) {
     const modal = document.getElementById(id);
     if (modal) modal.classList.add('hidden');
   }
 
+  // Event listeners for login and register buttons to show modals
   const loginBtn = document.getElementById('loginBtn');
   if (loginBtn) loginBtn.addEventListener('click', () => showModal('loginModal'));
 
   const registerBtn = document.getElementById('registerBtn');
   if (registerBtn) registerBtn.addEventListener('click', () => showModal('registerModal'));
 
+
+  // Close buttons inside modals hide their modals
   document.querySelectorAll('.close').forEach(btn => {
     btn.addEventListener('click', e => {
       const closeId = e.target.getAttribute('data-close');
@@ -191,15 +208,20 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+
+  // Clicking outside the modal content closes the modal
   window.addEventListener('click', e => {
     if (e.target.classList.contains('modal')) {
       e.target.classList.add('hidden');
     }
   });
 
+  // Refresh captcha on clicking refresh button
   const refreshCaptcha = document.getElementById('refreshCaptcha');
   if (refreshCaptcha) refreshCaptcha.onclick = createCaptcha;
 
+
+  // Initial captcha generation
   createCaptcha();
 });
 
