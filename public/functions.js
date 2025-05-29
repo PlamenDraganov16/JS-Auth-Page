@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function createCaptcha() {
 
-    
+
     const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
     captchaCode = Array.from({ length: 5 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
 
@@ -125,33 +125,33 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const editProfileForm = document.getElementById('editProfileForm');
-if (editProfileForm) {
-  editProfileForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  if (editProfileForm) {
+    editProfileForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
 
-    const updatedName = document.getElementById('nameInput').value.trim();
+      const updatedName = document.getElementById('nameInput').value.trim();
 
-    try {
-      const res = await fetch('/api/update-profile', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({ name: updatedName })
-      });
+      try {
+        const res = await fetch('/api/update-profile', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ name: updatedName })
+        });
 
-      const data = await res.json();
-      alert(data.message);
+        const data = await res.json();
+        alert(data.message);
 
-      if (data.success) {
-        // Update displayed name on profile
-        const nameEl = document.getElementById('name');
-        if (nameEl) nameEl.textContent = updatedName;
+        if (data.success) {
+          // Update displayed name on profile
+          const nameEl = document.getElementById('name');
+          if (nameEl) nameEl.textContent = updatedName;
+        }
+      } catch (err) {
+        console.error('Failed to update profile:', err);
+        alert('Failed to update profile.');
       }
-    } catch (err) {
-      console.error('Failed to update profile:', err);
-      alert('Failed to update profile.');
-    }
-  });
-}
+    });
+  }
 
   async function logout() {
     await fetch('/api/logout', { method: 'POST' });
