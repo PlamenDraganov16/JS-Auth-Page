@@ -22,6 +22,20 @@ Change their password securely
 
 Log out to end their session
 
+This application uses MySQL to store user information, including their name, email, and hashed password.
+![image](https://github.com/user-attachments/assets/06d748bd-239a-4268-9595-24f7e5f34e71)
+
+Testing
+This project includes unit and integration tests for key functionalities such as registration, login, profile retrieval, and session handling. Tests are written using:
+
+Jest – for unit testing functions and modules.
+
+Supertest – for simulating HTTP requests and testing API endpoints.
+
+node-mocks-http – for mocking req and res objects in low-level route/unit tests.
+![image](https://github.com/user-attachments/assets/c1d0c3d6-24dc-4624-bc57-f06ca54fbb85)
+
+
 Code Files Overview
 app.js
 Main server file using Node.js http module to handle HTTP requests and route API calls.
