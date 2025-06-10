@@ -158,3 +158,148 @@ describe('API Endpoints', () => {
     expect(res.status).toBe(401);
   });
 });
+
+// import supertest from 'supertest';
+// import { expect } from 'chai';
+// import server from '../app.js';
+// import db from '../config/db.js';
+// const request = supertest.agent(server); // Keeps cookies
+
+// // Helper to run SQL queries with promises
+// function query(sql) {
+//   return new Promise((resolve, reject) => {
+//     db.query(sql, (err, results) => {
+//       if (err) reject(err);
+//       else resolve(results);
+//     });
+//   });
+// }
+
+// describe('API Endpoints', function () {
+//   // Generate a random suffix to avoid email conflicts in tests
+//   const randomSuffix = Math.floor(Math.random() * 100000);
+//   const testUser = {
+//     name: 'TestUser',
+//     email: `testuser${randomSuffix}@example.com`,
+//     password: 'secret',
+//     newName: 'UpdatedUser',
+//     newPassword: 'newsecret',
+//   };
+
+//   before(async function () {
+//     await query("DELETE FROM users WHERE email LIKE 'testuser%@example.com'");
+//   });
+
+//   after(async function () {
+//     await query("DELETE FROM users WHERE email LIKE 'testuser%@example.com'");
+//     server.close();
+//     db.end();
+//   });
+
+//   it('should return 404 for unknown routes', async function () {
+//     const res = await request.get('/api/unknownroute');
+//     expect(res.status).to.equal(404);
+//   });
+
+//   it('should register a user', async function () {
+//     const res = await request.post('/api/register')
+//       .send(`name=${testUser.name}&email=${testUser.email}&password=${testUser.password}`)
+//       .set('Content-Type', 'application/x-www-form-urlencoded');
+
+//     expect(res.status).to.equal(201);
+//     expect(res.body.success).to.be.true;
+//   });
+
+//   it('should not allow registering with same email again', async function () {
+//     const res = await request.post('/api/register')
+//       .send(`name=${testUser.name}&email=${testUser.email}&password=${testUser.password}`)
+//       .set('Content-Type', 'application/x-www-form-urlencoded');
+
+//     expect(res.status).to.equal(409);
+//     expect(res.body.success).to.be.false;
+//   });
+
+//   it('should login the user', async function () {
+//     const res = await request.post('/api/login')
+//       .send(`email=${testUser.email}&password=${testUser.password}`)
+//       .set('Content-Type', 'application/x-www-form-urlencoded');
+
+//     expect(res.status).to.equal(200);
+//     expect(res.body.success).to.be.true;
+//     expect(res.body.user.email).to.equal(testUser.email);
+//   });
+
+//   it('should get user profile when authenticated', async function () {
+//     const res = await request.get('/api/profile');
+//     expect(res.status).to.equal(200);
+//     expect(res.body.success).to.be.true;
+//     expect(res.body.user.email).to.equal(testUser.email);
+//   });
+
+//   it('should not get profile when unauthenticated', async function () {
+//     const unauthRequest = supertest(server);
+//     const res = await unauthRequest.get('/api/profile');
+//     expect(res.status).to.equal(401);
+//   });
+
+//   it('should update profile name', async function () {
+//     const res = await request.post('/api/update-profile')
+//       .send(`name=${testUser.newName}`)
+//       .set('Content-Type', 'application/x-www-form-urlencoded');
+
+//     expect(res.status).to.equal(200);
+//     expect(res.body.success).to.be.true;
+//   });
+
+//   it('should reflect updated name in profile', async function () {
+//     const res = await request.get('/api/profile');
+//     expect(res.status).to.equal(200);
+//     expect(res.body.user.name).to.equal(testUser.newName);
+//   });
+
+//   it('should reject update profile without name', async function () {
+//     const res = await request.post('/api/update-profile')
+//       .send('name=')
+//       .set('Content-Type', 'application/x-www-form-urlencoded');
+
+//     expect(res.status).to.equal(400);
+//   });
+
+//   it('should change password', async function () {
+//     const res = await request.post('/api/change-password')
+//       .send(`currentPassword=${testUser.password}&newPassword=${testUser.newPassword}`)
+//       .set('Content-Type', 'application/x-www-form-urlencoded');
+
+//     expect(res.status).to.equal(200);
+//     expect(res.body.success).to.be.true;
+//   });
+
+//   it('should reject change password with wrong current password', async function () {
+//     const res = await request.post('/api/change-password')
+//       .send('currentPassword=wrongpassword&newPassword=doesntmatter')
+//       .set('Content-Type', 'application/x-www-form-urlencoded');
+
+//     expect(res.status).to.equal(401);
+//   });
+
+//   it('should login with new password after change', async function () {
+//     const newAgent = supertest.agent(server);
+//     const res = await newAgent.post('/api/login')
+//       .send(`email=${testUser.email}&password=${testUser.newPassword}`)
+//       .set('Content-Type', 'application/x-www-form-urlencoded');
+
+//     expect(res.status).to.equal(200);
+//     expect(res.body.success).to.be.true;
+//   });
+
+//   it('should logout the user', async function () {
+//     const res = await request.post('/api/logout');
+//     expect(res.status).to.equal(200);
+//     expect(res.body.success).to.be.true;
+//   });
+
+//   it('should reject profile request after logout', async function () {
+//     const res = await request.get('/api/profile');
+//     expect(res.status).to.equal(401);
+//   });
+// });

@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     captchaCode = Array.from({ length: 5 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
 
     const canvas = document.getElementById('captchaCanvas');
-    if (!canvas) return; // exit if no canvas found (no captcha on this page)
+    if (!canvas) return; // exit if no canvas found (no captcha on this page) // because this .js file is used by the two html's
     const ctx = canvas.getContext('2d');
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
