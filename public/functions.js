@@ -20,9 +20,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Check user input matches captchaCode, alert and regenerate if incorrect
   function checkCaptcha() {
-    const userInput = document.getElementById('captchaInput').value.trim();
+    const inputEl = document.getElementById('captchaInput');
+    const userInput = inputEl.value.trim();
     if (userInput !== captchaCode) {
       alert('Incorrect CAPTCHA.');
+      inputEl.value = "";
+
       createCaptcha();
       return false;
     }
@@ -34,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const response = await fetch('/api/login', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, // imitates standart html form
         body: new URLSearchParams({ email, password }),
       });
 
@@ -128,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const data = await res.json();
     alert(data.message);
+    location.reload();
   }
 
   // Handle edit profile form submit to update user name
@@ -155,6 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
           // Update displayed name on profile
           const nameEl = document.getElementById('name');
           if (nameEl) nameEl.textContent = updatedName;
+          location.reload();
         }
       } catch (err) {
         console.error('Failed to update profile:', err);
